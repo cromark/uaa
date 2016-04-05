@@ -373,6 +373,18 @@ public class UaaTokenServices implements AuthorizationServerTokenServices, Resou
         if (nonce != null) {
             info.put(NONCE, nonce);
         }
+
+        if( user != null) {
+            String givenName = user.getGivenName();
+            if(givenName != null) info.put(GIVEN_NAME, givenName);
+
+            String familyName = user.getFamilyName();
+            if(familyName != null) info.put(FAMILY_NAME, familyName);
+
+            String phoneNumber = user.getPhoneNumber();
+            if(phoneNumber != null) info.put(PHONE_NUMBER, phoneNumber);
+        }
+
         accessToken.setAdditionalInformation(info);
 
         String content;
@@ -389,6 +401,7 @@ public class UaaTokenServices implements AuthorizationServerTokenServices, Resou
             refreshToken,
             revocableHashSignature
         );
+
         try {
             content = JsonUtils.writeValueAsString(jwtAccessToken);
         } catch (JsonUtils.JsonUtilException e) {
